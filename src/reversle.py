@@ -91,15 +91,18 @@ def main():
     word_schedule = fetch_wordlist("word_schedule")    
 
     result = '''
-Wordle 256 2/6
+Wordle 256 5/6
 
-🟨🟨⬜🟨⬜
+⬜⬜⬜🟨🟨
+⬜⬜🟨🟨🟨
+🟨🟩🟨⬜⬜
+🟨🟩⬜🟨🟨
 🟩🟩🟩🟩🟩
     '''.strip().replace("⬜", "⬛")
     result_split = result.split("\n")
     meta = result_split[0]
 
-    print(result)
+    print(f"\n{result}")
     day_num = int(meta[meta.find("Wordle ") + 7:meta.find("/") - 2])
 
     todays_word = word_schedule[day_num]
@@ -137,4 +140,4 @@ Wordle 256 2/6
     print(f"\npossible first guesses ({len(roots)}) {roots}")
 
     sort_roots = sort_guesses(roots)
-    print(f"\nmost likely: {sort_roots}")
+    print(f"\nmost likely: {sort_roots}\n")
