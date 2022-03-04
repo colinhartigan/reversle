@@ -87,16 +87,15 @@ def sort_guesses(guesses):
     return sort
 
 def main():
-    valid_words = fetch_wordlist("allowed_words")
+    valid_words = fetch_wordlist("word_schedule")
     word_schedule = fetch_wordlist("word_schedule")    
 
     result = '''
-Wordle 256 5/6
+Wordle 257 4/6
 
-⬜⬜⬜🟨🟨
-⬜⬜🟨🟨🟨
-🟨🟩🟨⬜⬜
-🟨🟩⬜🟨🟨
+⬜⬜⬜⬜🟨
+⬜🟨🟨⬜⬜
+⬜🟨🟨⬜⬜
 🟩🟩🟩🟩🟩
     '''.strip().replace("⬜", "⬛")
     result_split = result.split("\n")
