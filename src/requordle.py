@@ -54,19 +54,25 @@ def get_valid_words(iter, guesses, word_list):
                 simulated_blocks = ""
 
                 for index,slot in enumerate(guess):
+                    # fill in the guaranteed letters first
                     letter = word[index]
 
-                    def nowork():
-                        _print(f"{word} -> {answer}", slot, f"{letter} -> {answer[index]}", "❌")
-
-                    def work():
-                        _print(f"{word} -> {answer}", slot, f"{letter} -> {answer[index]}", "✅")
-
                     if letter == answer[index]:
-                        simulated_outcome.append((letter,"🟩"))
+                        simulated_outcome.append((letter, "🟩"))
+                    else:
+                        simulated_outcome.append((letter, "🟦")) # blue = temp, needs to be replaced
+
+
+                for index,slot in enumerate(guess):
+                    # check for everything else
+                    letter = word[index]
+
+                    if letter == answer[index]: # greens
+                        simulated_outcome[index] = (letter,"🟩")
                     
-                    elif letter in answer:
+                    elif letter in answer: # yellows 'n whites
                         if word.count(letter) > 1:
+                                
                             expected = answer.count(letter)
                             actual = 0 
 
@@ -74,47 +80,22 @@ def get_valid_words(iter, guesses, word_list):
                                 if i[0] == letter and (i[1] == "🟩" or i[1] == "🟨"):
                                     actual += 1
                             if actual < expected:
-                                simulated_outcome.append((letter,"🟨"))
+                                simulated_outcome[index] = (letter,"🟨")
                             else:
-                                simulated_outcome.append((letter,"⬜"))
+                                simulated_outcome[index] = (letter,"⬜")
                         else:
-                            simulated_outcome.append((letter,"🟨"))
+                            simulated_outcome[index] = (letter,"🟨")
                     
-                    elif not letter in answer:
-                        simulated_outcome.append((letter,"⬜"))
+                    elif not letter in answer: # whites
+                        simulated_outcome[index] = (letter,"⬜")
 
                 _print(simulated_outcome)
                 simulated_blocks = "".join([i[1] for i in simulated_outcome])
                 if not simulated_blocks == guess:
                     works = False
 
-                    
-
-                    # if slot == "⬜":
-                    #     if letter in answer_letters:
-                    #         works = False
-                    #         nowork()
-                    #         break
-                    #     else:
-                    #         work()
-                    # if slot == "🟨":
-                    #     if not letter in answer_letters or answer_letters[index] == letter:
-                    #         works = False
-                    #         nowork()
-                    #         break
-                    #     else:
-                    #         work()
-                    # if slot == "🟩":
-                    #     if letter != answer_letters[index]:
-                    #         works = False
-                    #         nowork()
-                    #         break
-                    #     else:
-                    #         work()
-
-
-
         if works:
+            _print("WORKS!")
             valid.append(word)
 
     return valid
@@ -127,24 +108,27 @@ def main(answers):
 
     result = '''
 Daily Quordle #38
-6️⃣4️⃣
-8️⃣7️⃣
+4️⃣🟥
+7️⃣8️⃣
 quordle.com
-⬜🟨🟨⬜⬜ 🟨🟨⬜⬜⬜
-⬜⬜⬜🟨⬜ 🟩⬜⬜🟩⬜
-⬜🟨🟨⬜⬜ ⬜🟨🟨⬜⬜
-⬜🟨⬜⬜🟨 🟩🟩🟩🟩🟩
-🟩🟨⬜🟨⬜ ⬛⬛⬛⬛⬛
-🟩🟩🟩🟩🟩 ⬛⬛⬛⬛⬛
+⬜⬜🟨🟨🟩 ⬜🟨⬜🟨🟨
+🟩🟨🟨⬜🟩 ⬜🟨⬜⬜🟨
+🟩🟩🟩⬜🟩 ⬜⬜🟨⬜🟨
+🟩🟩🟩🟩🟩 ⬜⬜🟨⬜🟨
+⬛⬛⬛⬛⬛ ⬜⬜⬜🟩🟩
+⬛⬛⬛⬛⬛ ⬜⬜🟨⬜🟩
+⬛⬛⬛⬛⬛ ⬜⬜⬜⬜🟨
+⬛⬛⬛⬛⬛ ⬜🟨🟨⬜🟩
+⬛⬛⬛⬛⬛ 🟩⬜⬜🟩🟩
 
-⬜⬜⬜🟨🟨 ⬜🟨🟨⬜⬜
-⬜🟨🟨🟨⬜ 🟨⬜⬜🟨⬜
-⬜⬜🟨⬜⬜ ⬜🟨🟩🟨⬜
-⬜🟨⬜⬜⬜ 🟨🟨⬜⬜🟩
-⬜⬜🟩🟨⬜ ⬜🟨⬜🟨⬜
+⬜⬜⬜⬜🟩 🟩⬜🟨🟨🟨
+⬜⬜⬜🟩🟩 ⬜🟨🟨⬜🟨
+⬜⬜⬜⬜🟩 ⬜🟨🟨⬜🟨
 ⬜⬜⬜🟨🟩 ⬜🟨🟨⬜🟨
-⬜⬜🟨⬜⬜ 🟩🟩🟩🟩🟩
-🟩🟩🟩🟩🟩 ⬛⬛⬛⬛⬛
+⬜⬜🟨🟨⬜ 🟩🟨⬜🟨🟩
+⬜⬜🟨⬜⬜ 🟩⬜🟩🟩🟩
+🟩🟩🟩🟩🟩 ⬜⬜⬜⬜🟨
+⬛⬛⬛⬛⬛ 🟩🟩🟩🟩🟩
     '''.strip()
 
     meta, guesses = sanitize_input(result, answers)
@@ -160,7 +144,7 @@ quordle.com
             next(iter=i,guesses=guesses)
 
     else:
-        next(iter=6, guesses=guesses)
+        next(iter=5, guesses=guesses)
 
     print_output(calculated_guesses)
 
